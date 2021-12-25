@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[79]:
 
 
 #importing libs
@@ -10,103 +10,107 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 
 
-# In[50]:
+# In[80]:
 
 
 #Creating the dataframe
 df = pd.read_csv("C:/Users/facla/Documents/CursoPython/Cap11/pima-data.csv")
 
 
-# In[5]:
+# In[64]:
 
 
 df.shape
 
 
-# In[3]:
+# In[65]:
 
 
 df.head(5)
 
 
-# In[4]:
+# In[66]:
 
 
 #Checking for null values
 df.isnull().values.any()
 
 
-# In[5]:
+# In[67]:
 
 
-df = df.append(pd.Series(), ignore_index=True)
+#Adicionar linha vazia para teste
+#df = df.append(pd.Series(), ignore_index=True)
 
 
-# In[6]:
-
-
-df.isnull()
-
-
-# In[7]:
-
-
-if df.isnull().values.any():
-    df = df.dropna()
-
-
-# In[8]:
+# In[68]:
 
 
 df.isnull()
 
 
-# In[11]:
+# In[44]:
+
+
+#Remoce linha vazia
+#if df.isnull().values.any():
+ #   df = df.dropna()
+
+
+# In[69]:
+
+
+df.isnull()
+
+
+# In[70]:
 
 
 pd.crosstab(index=df['diabetes'], columns='count')
 
 
-# In[14]:
+# In[71]:
 
 
 import sklearn as sk
 from sklearn.model_selection import train_test_split
+X = df.values
+Y = df["diabetes"].values
 
 
-# In[26]:
+# In[73]:
 
 
-df_train, df_test = train_test_split(df, test_size=0.25, shuffle=False)
+df_train, df_test, y_train, y_teste = train_test_split(df, Y, test_size=0.25, shuffle = False)
 
 
-# In[27]:
+# In[49]:
 
 
 df_train
 
 
-# In[28]:
+# In[50]:
 
 
 df_test
 
 
-# In[39]:
+# In[74]:
 
 
-df_test.drop('diabetes', inplace=True)
+
+df_test.drop('diabetes', inplace=True, axis=1)
 df_test
 
 
-# In[40]:
+# In[ ]:
 
 
-y = df_train["diabetes"]
-y
 
 
-# In[41]:
+
+# In[75]:
 
 
 features = ["num_preg",	"glucose_conc",	"diastolic_bp",	"thickness", "insulin",	"bmi", "diab_pred", "age", "skin"]
@@ -114,17 +118,16 @@ X = pd.get_dummies(df_train[features])
 X_test = pd.get_dummies(df_test[features])
 
 
-# In[45]:
+# In[76]:
 
 
 
 model = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=1)
-model.fit(X, y)
+model.fit(X, y_train)
 predictions = model.predict(X_test)
-predictions
 
 
-# In[48]:
+# In[77]:
 
 
 output = pd.DataFrame({'PersonId': df_test.index, 'diabetes': predictions})
@@ -132,20 +135,26 @@ output.to_csv('submission.csv', index=False)
 print("Your submission was successfully saved!")
 
 
-# In[54]:
+# In[78]:
 
 
-compare = df["diabetes"]
-compare
+from sklearn import metrics
+print("{0:.4f}".format(metrics.accuracy_score(y_teste, predictions)))
 
 
-# In[52]:
-
-
-output
+# In[ ]:
 
 
 
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
 
 
 
