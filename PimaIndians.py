@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[79]:
+# In[100]:
 
 
 #importing libs
@@ -10,46 +10,46 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 
 
-# In[80]:
+# In[101]:
 
 
 #Creating the dataframe
 df = pd.read_csv("C:/Users/facla/Documents/CursoPython/Cap11/pima-data.csv")
 
 
-# In[64]:
+# In[102]:
 
 
 df.shape
 
 
-# In[65]:
+# In[103]:
 
 
 df.head(5)
 
 
-# In[66]:
+# In[104]:
 
 
 #Checking for null values
 df.isnull().values.any()
 
 
-# In[67]:
+# In[105]:
 
 
 #Adicionar linha vazia para teste
 #df = df.append(pd.Series(), ignore_index=True)
 
 
-# In[68]:
+# In[106]:
 
 
 df.isnull()
 
 
-# In[44]:
+# In[107]:
 
 
 #Remoce linha vazia
@@ -57,19 +57,19 @@ df.isnull()
  #   df = df.dropna()
 
 
-# In[69]:
+# In[108]:
 
 
 df.isnull()
 
 
-# In[70]:
+# In[109]:
 
 
 pd.crosstab(index=df['diabetes'], columns='count')
 
 
-# In[71]:
+# In[110]:
 
 
 import sklearn as sk
@@ -78,25 +78,25 @@ X = df.values
 Y = df["diabetes"].values
 
 
-# In[73]:
+# In[111]:
 
 
-df_train, df_test, y_train, y_teste = train_test_split(df, Y, test_size=0.25, shuffle = False)
+df_train, df_test, y_train, y_teste = train_test_split(df, Y, test_size=0.25, random_state = 42, shuffle = True)
 
 
-# In[49]:
+# In[112]:
 
 
 df_train
 
 
-# In[50]:
+# In[113]:
 
 
 df_test
 
 
-# In[74]:
+# In[114]:
 
 
 
@@ -110,7 +110,7 @@ df_test
 
 
 
-# In[75]:
+# In[115]:
 
 
 features = ["num_preg",	"glucose_conc",	"diastolic_bp",	"thickness", "insulin",	"bmi", "diab_pred", "age", "skin"]
@@ -118,7 +118,7 @@ X = pd.get_dummies(df_train[features])
 X_test = pd.get_dummies(df_test[features])
 
 
-# In[76]:
+# In[116]:
 
 
 
@@ -127,7 +127,7 @@ model.fit(X, y_train)
 predictions = model.predict(X_test)
 
 
-# In[77]:
+# In[117]:
 
 
 output = pd.DataFrame({'PersonId': df_test.index, 'diabetes': predictions})
@@ -135,7 +135,7 @@ output.to_csv('submission.csv', index=False)
 print("Your submission was successfully saved!")
 
 
-# In[78]:
+# In[118]:
 
 
 from sklearn import metrics
