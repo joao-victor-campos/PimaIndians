@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[100]:
+# In[1]:
 
 
 #importing libs
@@ -10,46 +10,46 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 
 
-# In[101]:
+# In[2]:
 
 
 #Creating the dataframe
 df = pd.read_csv("C:/Users/facla/Documents/CursoPython/Cap11/pima-data.csv")
 
 
-# In[102]:
+# In[3]:
 
 
 df.shape
 
 
-# In[103]:
+# In[4]:
 
 
 df.head(5)
 
 
-# In[104]:
+# In[5]:
 
 
 #Checking for null values
 df.isnull().values.any()
 
 
-# In[105]:
+# In[6]:
 
 
 #Adicionar linha vazia para teste
 #df = df.append(pd.Series(), ignore_index=True)
 
 
-# In[106]:
+# In[7]:
 
 
 df.isnull()
 
 
-# In[107]:
+# In[8]:
 
 
 #Remoce linha vazia
@@ -57,19 +57,19 @@ df.isnull()
  #   df = df.dropna()
 
 
-# In[108]:
+# In[9]:
 
 
 df.isnull()
 
 
-# In[109]:
+# In[10]:
 
 
 pd.crosstab(index=df['diabetes'], columns='count')
 
 
-# In[110]:
+# In[11]:
 
 
 import sklearn as sk
@@ -78,30 +78,30 @@ X = df.values
 Y = df["diabetes"].values
 
 
-# In[111]:
+# In[25]:
 
 
 df_train, df_test, y_train, y_teste = train_test_split(df, Y, test_size=0.25, random_state = 42, shuffle = True)
 
 
-# In[112]:
+# In[13]:
 
 
-df_train
 
 
-# In[113]:
+
+# In[14]:
 
 
-df_test
 
 
-# In[114]:
+
+# In[32]:
 
 
 
 df_test.drop('diabetes', inplace=True, axis=1)
-df_test
+df_train.drop('diabetes', inplace=True, axis=1)
 
 
 # In[ ]:
@@ -110,7 +110,7 @@ df_test
 
 
 
-# In[115]:
+# In[16]:
 
 
 features = ["num_preg",	"glucose_conc",	"diastolic_bp",	"thickness", "insulin",	"bmi", "diab_pred", "age", "skin"]
@@ -118,43 +118,46 @@ X = pd.get_dummies(df_train[features])
 X_test = pd.get_dummies(df_test[features])
 
 
-# In[116]:
+# In[36]:
 
 
-
+#Primeiro Modelo (RandomForest)
 model = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=1)
 model.fit(X, y_train)
 predictions = model.predict(X_test)
 
 
-# In[117]:
+# In[37]:
 
 
 output = pd.DataFrame({'PersonId': df_test.index, 'diabetes': predictions})
 output.to_csv('submission.csv', index=False)
-print("Your submission was successfully saved!")
 
 
-# In[118]:
+# In[38]:
 
 
 from sklearn import metrics
 print("{0:.4f}".format(metrics.accuracy_score(y_teste, predictions)))
 
 
-# In[ ]:
+# In[39]:
+
+
+#Segundo modelo (GaussianNB() / naive Bayes)
+from sklearn.naive_bayes import GaussianNB
+gnb = GaussianNB()
+y_pred_gnb = gnb.fit(df_train, y_train).predict(df_test)
+print("{0:.4f}".format(metrics.accuracy_score(y_teste, y_pred_gnb)))
+
+
+# In[30]:
 
 
 
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
+# In[34]:
 
 
 
