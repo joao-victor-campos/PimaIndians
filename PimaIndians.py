@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[41]:
+# In[1]:
 
 
 #importing libs
@@ -10,46 +10,46 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 
 
-# In[42]:
+# In[2]:
 
 
 #Creating the dataframe
 df = pd.read_csv("C:/Users/facla/Documents/CursoPython/Cap11/pima-data.csv")
 
 
-# In[43]:
+# In[3]:
 
 
 df.shape
 
 
-# In[44]:
+# In[4]:
 
 
 df.head(5)
 
 
-# In[45]:
+# In[5]:
 
 
 #Checking for null values
 df.isnull().values.any()
 
 
-# In[46]:
+# In[6]:
 
 
 #Adicionar linha vazia para teste
 #df = df.append(pd.Series(), ignore_index=True)
 
 
-# In[47]:
+# In[7]:
 
 
 df.isnull()
 
 
-# In[48]:
+# In[8]:
 
 
 #Remoce linha vazia
@@ -57,7 +57,7 @@ df.isnull()
  #   df = df.dropna()
 
 
-# In[67]:
+# In[9]:
 
 
 #verificando missing value 
@@ -70,13 +70,13 @@ print("# Linhas missing em bmi {0}".format(len(df.loc[df['bmi'] == 0])))
 print("# Linhas missing em age {0}".format(len(df.loc[df['age'] == 0]))) 
 
 
-# In[50]:
+# In[10]:
 
 
 pd.crosstab(index=df['diabetes'], columns='count')
 
 
-# In[64]:
+# In[11]:
 
 
 import sklearn as sk
@@ -87,7 +87,7 @@ from sklearn.model_selection import train_test_split
 Y = df["diabetes"].values
 
 
-# In[71]:
+# In[12]:
 
 
 df_train, df_test, y_train, y_teste = train_test_split(df, Y, test_size=0.25, random_state = 42, shuffle = True)
@@ -99,7 +99,7 @@ X_test = df_test[features]
 X_test.head(5)
 
 
-# In[73]:
+# In[13]:
 
 
 #Using Impute to substitute missing values 
@@ -113,13 +113,13 @@ type(X_test)
 X_test.head(100)
 
 
-# In[59]:
+# In[ ]:
 
 
 
 
 
-# In[72]:
+# In[14]:
 
 
 #Primeiro Modelo (RandomForest)
@@ -130,7 +130,7 @@ from sklearn import metrics
 print("{0:.4f}".format(metrics.accuracy_score(y_teste, predictions)))
 
 
-# In[77]:
+# In[15]:
 
 
 #output the prediction to a csv
@@ -138,7 +138,7 @@ output = pd.DataFrame({'PersonId': X_test.index, 'diabetes': predictions})
 output.to_csv('submission.csv', index=False)
 
 
-# In[74]:
+# In[16]:
 
 
 #Segundo modelo (GaussianNB() / naive Bayes)
@@ -148,12 +148,12 @@ y_pred_gnb = gnb.fit(X_train, y_train).predict(X_test)
 print("{0:.4f}".format(metrics.accuracy_score(y_teste, y_pred_gnb)))
 
 
-# In[75]:
+# In[22]:
 
 
 #Terceiro modelo (Regressão Logística)
 from sklearn.linear_model import LogisticRegression
-lr = LogisticRegression(C = 0.7, random_state = 42)
+lr = LogisticRegression(C = 0.7, random_state = 42, max_iter = 160)
 lr.fit(X_train, y_train)
 lr_prediction = lr.predict(X_test)
 print("{0:.4f}".format(metrics.accuracy_score(y_teste, lr_prediction)))
